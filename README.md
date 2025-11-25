@@ -19,11 +19,13 @@ Secure code execution sandbox for AI agents. Try it instantly in your browser wi
 - **`context-injection.ipynb`** - Inject context and data into code execution
 - **`security-demo.ipynb`** - Security boundaries and resource limits
 - **`mcp-usage.ipynb`** - MCP integration with DAG workflow visualization 📊
+- **`llm-demo.ipynb`** - Multi-LLM integration (OpenAI, Anthropic, Google) 🤖
 
 ### MCP Server Examples
 
 - **`examples/server.ts`** - Launch the gateway as an MCP server
 - **`examples/client-demo.ts`** - Connect and execute code via MCP protocol
+- **`examples/llm-provider.ts`** - Multi-LLM provider abstraction (AI SDK)
 - **`.env.example`** - Configuration template (API keys, limits)
 
 ### Features Demonstrated
@@ -36,6 +38,26 @@ Secure code execution sandbox for AI agents. Try it instantly in your browser wi
 - ✅ **DAG Workflows** - Multi-step execution with dependency management
 - ✅ **Graph Visualization** - Visual DAG representation with Graphviz
 
+## Multi-LLM Support 🤖
+
+Use **any LLM provider** with your own API keys! The system auto-detects the provider from your key format:
+
+- **OpenAI GPT** - Keys starting with `sk-`
+- **Anthropic Claude** - Keys starting with `sk-ant-`
+- **Google Gemini** - Keys starting with `AIza`
+
+```bash
+# Set your API key (choose one)
+export ANTHROPIC_API_KEY="sk-ant-api03-..."
+export OPENAI_API_KEY="sk-..."
+export GOOGLE_API_KEY="AIza..."
+
+# Test the provider
+deno run --allow-env --allow-net examples/llm-provider.ts
+```
+
+See `notebooks/llm-demo.ipynb` for interactive examples!
+
 ## Running the MCP Server
 
 Launch the gateway as an MCP server for your AI agents:
@@ -44,8 +66,10 @@ Launch the gateway as an MCP server for your AI agents:
 # Copy environment template
 cp .env.example .env
 
-# Edit .env and add your API key (optional)
+# Edit .env and add your API key (any provider)
 # ANTHROPIC_API_KEY=sk-ant-api03-...
+# OPENAI_API_KEY=sk-...
+# GOOGLE_API_KEY=AIza...
 
 # Start the MCP server
 deno run --allow-all examples/server.ts
