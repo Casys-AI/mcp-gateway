@@ -16,8 +16,15 @@ Secure code execution sandbox for AI agents. Try it instantly in your browser wi
 ### Notebooks
 
 - **`sandbox-basics.ipynb`** - Core sandbox features: execution, error handling, timeouts
-- **`context-injection.ipynb`** *(coming soon)* - Inject context and data into code execution
-- **`security-demo.ipynb`** *(coming soon)* - Security boundaries and resource limits
+- **`context-injection.ipynb`** - Inject context and data into code execution
+- **`security-demo.ipynb`** - Security boundaries and resource limits
+- **`mcp-usage.ipynb`** - MCP integration with DAG workflow visualization 📊
+
+### MCP Server Examples
+
+- **`examples/server.ts`** - Launch the gateway as an MCP server
+- **`examples/client-demo.ts`** - Connect and execute code via MCP protocol
+- **`.env.example`** - Configuration template (API keys, limits)
 
 ### Features Demonstrated
 
@@ -26,6 +33,29 @@ Secure code execution sandbox for AI agents. Try it instantly in your browser wi
 - ✅ **Timeout Protection** - Automatic termination of long-running code
 - ✅ **Result Serialization** - Structured JSON output for AI agents
 - ✅ **Memory Limits** - Resource exhaustion prevention
+- ✅ **DAG Workflows** - Multi-step execution with dependency management
+- ✅ **Graph Visualization** - Visual DAG representation with Graphviz
+
+## Running the MCP Server
+
+Launch the gateway as an MCP server for your AI agents:
+
+```bash
+# Copy environment template
+cp .env.example .env
+
+# Edit .env and add your API key (optional)
+# ANTHROPIC_API_KEY=sk-ant-api03-...
+
+# Start the MCP server
+deno run --allow-all examples/server.ts
+```
+
+Test with the client demo:
+
+```bash
+deno run --allow-net --allow-env examples/client-demo.ts
+```
 
 ## Local Installation
 

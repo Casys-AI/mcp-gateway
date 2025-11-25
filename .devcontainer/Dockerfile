@@ -1,5 +1,10 @@
 FROM denoland/deno:latest
 
+# Install system dependencies for Graphviz (DAG visualization)
+RUN apt-get update && apt-get install -y \
+    graphviz \
+    && rm -rf /var/lib/apt/lists/*
+
 # Install Jupyter kernel for Deno
 RUN deno jupyter --install --unstable
 
