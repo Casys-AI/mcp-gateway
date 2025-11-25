@@ -1,125 +1,99 @@
-# Casys MCP Gateway - Sandbox Playground
+# Casys MCP Gateway - Interactive Playground
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/Casys-AI/mcp-gateway)
 
-Secure code execution sandbox for AI agents. Try it instantly in your browser with zero installation.
+Interactive playground to explore the Casys MCP Gateway. Try it instantly in your browser - no installation required!
 
 ## Quick Start
 
-1. **Click "Open in GitHub Codespaces" above** ☝️
-2. Wait ~30 seconds for environment setup
-3. Open `notebooks/sandbox-basics.ipynb`
-4. Click "Run All" or execute cells individually
+1. **Click "Open in GitHub Codespaces" above**
+2. Wait for environment setup (~30 seconds)
+3. Open any notebook from `notebooks/`
+4. Run cells individually or "Run All"
 
-## What's Inside
+Each notebook is **100% independent** - start with any one!
 
-### Notebooks
+## Notebooks
 
-- **`sandbox-basics.ipynb`** - Core sandbox features: execution, error handling, timeouts
-- **`context-injection.ipynb`** - Inject context and data into code execution
-- **`security-demo.ipynb`** - Security boundaries and resource limits
-- **`mcp-usage.ipynb`** - MCP integration with DAG workflow visualization 📊
-- **`llm-demo.ipynb`** - Multi-LLM integration (OpenAI, Anthropic, Google) 🤖
+### Core Features
 
-### MCP Server Examples
+| Notebook | Description |
+|----------|-------------|
+| `sandbox-basics.ipynb` | Code execution, error handling, timeouts |
+| `context-injection.ipynb` | Inject data and context into executions |
+| `security-demo.ipynb` | Security boundaries, permissions, limits |
 
-- **`examples/server.ts`** - Launch the gateway as an MCP server
-- **`examples/client-demo.ts`** - Connect and execute code via MCP protocol
-- **`examples/llm-provider.ts`** - Multi-LLM provider abstraction (AI SDK)
-- **`.env.example`** - Configuration template (API keys, limits)
+### Advanced Features
 
-### Features Demonstrated
+| Notebook | Description |
+|----------|-------------|
+| `dag-workflows.ipynb` | Multi-step DAG workflows with dependencies |
+| `mcp-discovery.ipynb` | MCP server discovery and tool aggregation |
+| `mcp-usage.ipynb` | LLM + MCP integration with tool calling |
+| `llm-demo.ipynb` | Multi-LLM support (OpenAI, Anthropic, Google) |
 
-- ✅ **Isolated Execution** - Code runs in separate Deno subprocess
-- ✅ **Error Handling** - Syntax and runtime errors captured gracefully
-- ✅ **Timeout Protection** - Automatic termination of long-running code
-- ✅ **Result Serialization** - Structured JSON output for AI agents
-- ✅ **Memory Limits** - Resource exhaustion prevention
-- ✅ **DAG Workflows** - Multi-step execution with dependency management
-- ✅ **Graph Visualization** - Visual DAG representation with Graphviz
+## Multi-LLM Support
 
-## Multi-LLM Support 🤖
+Use **any LLM provider** with your own API keys:
 
-Use **any LLM provider** with your own API keys! The system auto-detects the provider from your key format:
+| Provider | Key Format | Model |
+|----------|-----------|-------|
+| OpenAI | `sk-...` | GPT-4 |
+| Anthropic | `sk-ant-...` | Claude |
+| Google | `AIza...` | Gemini |
 
-- **OpenAI GPT** - Keys starting with `sk-`
-- **Anthropic Claude** - Keys starting with `sk-ant-`
-- **Google Gemini** - Keys starting with `AIza`
+```typescript
+// Auto-detects provider from key format!
+import { createLLM } from "./examples/llm-provider.ts";
 
-```bash
-# Set your API key (choose one)
-export ANTHROPIC_API_KEY="sk-ant-api03-..."
-export OPENAI_API_KEY="sk-..."
-export GOOGLE_API_KEY="AIza..."
-
-# Test the provider
-deno run --allow-env --allow-net examples/llm-provider.ts
+const model = createLLM({ apiKey: Deno.env.get("OPENAI_API_KEY") });
 ```
 
-See `notebooks/llm-demo.ipynb` for interactive examples!
+## Examples
 
-## Running the MCP Server
+| File | Description |
+|------|-------------|
+| `examples/http-server.ts` | HTTP wrapper for sandbox (notebooks) |
+| `examples/mcp-server.ts` | Full MCP server setup |
+| `examples/llm-provider.ts` | Multi-LLM abstraction (AI SDK) |
 
-Launch the gateway as an MCP server for your AI agents:
+## What You Can Do
 
-```bash
-# Copy environment template
-cp .env.example .env
+- **Execute Code Safely** - Run untrusted code in isolated sandbox
+- **Build DAG Workflows** - Multi-step pipelines with dependencies
+- **Discover MCP Servers** - Auto-find and aggregate tools
+- **Use Any LLM** - OpenAI, Anthropic, Google with one interface
+- **Let LLMs Call Tools** - AI-driven code execution
 
-# Edit .env and add your API key (any provider)
-# ANTHROPIC_API_KEY=sk-ant-api03-...
-# OPENAI_API_KEY=sk-...
-# GOOGLE_API_KEY=AIza...
-
-# Start the MCP server
-deno run --allow-all examples/server.ts
-```
-
-Test with the client demo:
-
-```bash
-deno run --allow-net --allow-env examples/client-demo.ts
-```
-
-## Local Installation
-
-Install the package from JSR:
+## Installation (Local)
 
 ```bash
 deno add jsr:@casys/mcp-gateway
 ```
 
-**Example usage:**
-
 ```typescript
-import { DenoSandboxExecutor } from "jsr:@casys/mcp-gateway";
+import {
+  DenoSandboxExecutor,
+  ParallelExecutor,
+  AgentCardsGatewayServer,
+  MCPServerDiscovery
+} from "jsr:@casys/mcp-gateway";
 
-const sandbox = new DenoSandboxExecutor({
-  timeout: 5000,      // 5s max
-  memoryLimit: 128,   // 128MB max
-});
-
+// Sandbox
+const sandbox = new DenoSandboxExecutor({ timeout: 5000 });
 const result = await sandbox.execute("return 1 + 1");
-console.log(result); // { success: true, result: 2, executionTimeMs: 45 }
+
+// DAG Executor
+const executor = new ParallelExecutor(toolExecutor);
+await executor.execute(dag);
 ```
 
 ## Links
 
-- **📦 [JSR Package](https://jsr.io/@casys/mcp-gateway)** - Documentation and API reference
-- **💻 [Source Code](https://github.com/Casys-AI/AgentCards)** - Full implementation with DAG workflow executor
-- **📝 [Blog Series](https://www.linkedin.com/in/thibaulthulaux/)** - Deep dive into adaptive AI agents
-
-## Why This Exists
-
-This sandbox enables AI agents to execute code securely as part of Model Context Protocol (MCP) workflows. It's designed for:
-
-- **Tool execution** in AI agent workflows
-- **Dynamic data transformation** based on context
-- **Safe evaluation** of untrusted code
-- **Adaptive workflow execution** with feedback loops
-
-Built with [Deno](https://deno.com) for security-first JavaScript/TypeScript runtime.
+- [JSR Package](https://jsr.io/@casys/mcp-gateway) - API documentation
+- [Source Code](https://github.com/Casys-AI/AgentCards) - Full implementation
+- [Blog Series](https://www.linkedin.com/in/thibaulthulaux/) - Deep dives
 
 ## License
 
-MIT - See [LICENSE](LICENSE) file
+MIT - See [LICENSE](LICENSE)
