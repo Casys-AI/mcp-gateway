@@ -44,7 +44,7 @@ Use **any LLM provider** with your own API keys:
 
 ```typescript
 // Auto-detects provider from key format!
-import { createLLM } from "./examples/llm-provider.ts";
+import { createLLM } from "./examples/lib/llm-provider.ts";
 
 const model = createLLM({ apiKey: Deno.env.get("OPENAI_API_KEY") });
 ```
@@ -53,9 +53,9 @@ const model = createLLM({ apiKey: Deno.env.get("OPENAI_API_KEY") });
 
 | File | Description |
 |------|-------------|
-| `examples/http-server.ts` | HTTP wrapper for sandbox (notebooks) |
-| `examples/mcp-server.ts` | Full MCP server setup |
-| `examples/llm-provider.ts` | Multi-LLM abstraction (AI SDK) |
+| `examples/server.ts` | HTTP wrapper for sandbox (notebooks) |
+| `examples/server.ts` | Full MCP server setup |
+| `examples/lib/llm-provider.ts` | Multi-LLM abstraction (AI SDK) |
 
 ## What You Can Do
 
