@@ -1,0 +1,7 @@
+node_modules/
+deno.lock
+.cache/
+*.log
+.env
+.DS_Store
+.agentcards/
